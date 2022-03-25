@@ -1,3 +1,7 @@
+# Custom files
+*.h5
+*.pkl
+*.inp
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
