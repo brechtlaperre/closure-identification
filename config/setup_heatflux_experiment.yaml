@@ -1,0 +1,16 @@
+experiment_name: 'hf_all_sim'
+
+target: ['HFx', 'HFy', 'HFz']
+features: ['rho', 
+           'Bx', 'By', 'Bz', 'B_magn', 
+           'alpha', 
+           'Vx', 'Vy', 'Vz', 
+           'dBxdx', 'dBxdy', 'dBydy', 'dBzdx', 'dBzdy']
+species: ['all_electrons']
+datafiles: ['high_res_2', 'high_res_hbg', 'high_res_bg3', 'high_res_bg0']
+
+outputscaler: null
+boxcox: False
+
+
+

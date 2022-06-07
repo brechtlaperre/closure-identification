@@ -8,12 +8,15 @@ Published in Physics of Plasmas (Vol.29, Issue 3), 2022.
 
 ## How to cite
 
-> B. Laperre, J. Amaya, S. Jamal, and G. Lapenta, "Identification of high order closure terms from fully kinetic simulations using machine learning", Physics of Plasmas 29, 032706 (2022) https://doi.org/10.1063/5.0066397 
+> B. Laperre, J. Amaya, S. Jamal, and G. Lapenta, "Identification of high order closure terms from fully kinetic simulations using machine learning", Physics of Plasmas 29, 032706 (2022). https://doi.org/10.1063/5.0066397 
 
 -----
 
-# Info
+# How to use
 
-Codebase used to create the experiments described in above paper. 
+1. Download the simulation data from [OSF](https://osf.io/gts8e/).
+2. Place the downloaded data in the respective folders in `data/raw`
+3. Run `make experiments` to prepare the experiment data. 
+
 
 

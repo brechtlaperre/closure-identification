@@ -14,18 +14,19 @@ OUTPUT TRANFORMATION:
 2. StandardScaler
 
 '''
-import sys
+import copy
+from pathlib import Path
+import argparse 
+import pickle
+import h5py
 import pandas as pd
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from scipy.stats import boxcox
 from scipy.special import inv_boxcox
-import h5py
-import pickle
-import copy
-from pathlib import Path
+import yaml
 
 from sample_processed_data import create_experiment_from_stored_sample
-from utils import DataSet
+from src.data.data_utils import DataSet
 
 def get_boxcox_lambdas():
     return {'Ppar': -0.3, 'Pper1': -0.45, 'Pper2': -0.5}
@@ -99,111 +100,112 @@ def save_experiment_to_file(filename, train_set, valid_set, x_test_dict, y_test_
                 s = s_out.create_dataset('{}'.format(target), y_test_dict[key][target].shape, dtype=dtype)
                 s[...] = y_test_dict[key][target].to_numpy().astype(dtype)        
 
-def create_experiments(experiment_dict, experiment_species, target, features, bx=True, outputscaler=None):
+def create_experiments(exp_name, exp_files, experiment_species, target, features, bx=True, outputscaler=None):
 
     all_files = ['high_res_2', 'high_res_hbg', 'high_res_bg0', 'high_res_bg3']
     
     target.sort()
     features.sort()
 
-    for spec in experiment_species:
-        for exp_name, exp_files in experiment_dict.items():
+    path = 'data/experiment/{}'.format(exp_name)
+    Path(path).mkdir(parents=True, exist_ok=True)
 
-            path = 'data/experiment/{}'.format(exp_name)
-            Path(path).mkdir(parents=True, exist_ok=True)
+    for specie in experiment_species:
+        datafiles = []
+        for dfile in exp_files:
+            datafiles.append('data/sampled/{}_{}_sampled.h5'.format(dfile, specie))
+        train, valid, _, _, _ = create_experiment_from_stored_sample(target, features, datafiles)
+        
+        ## Create transformer
+        input_scaler = StandardScaler()
+        output_scaler = {}
 
-            datafiles = []
-            for dfile in exp_files:
-                datafiles.append('data/sampled/{}_{}_sampled.h5'.format(dfile, spec))
-            train, valid, _, _, _ = create_experiment_from_stored_sample(target, features, datafiles)
-            
-            ## Create transformer
-            input_scaler = StandardScaler()
-            output_scaler = {}
+        ## Transform data
+        x_train = input_scaler.fit_transform(train.x)
+        x_valid = input_scaler.transform(valid.x)
 
-            ## Transform data
-            x_train = input_scaler.fit_transform(train.x)
-            x_valid = input_scaler.transform(valid.x)
+        if bx:
+            bx_lambdas = get_boxcox_lambdas()
+            bx_lambdas = {'Ppar': 0, 'Pper1': 0, 'Pper2': 0}
+            y_train = box_cox_transform(train.y, bx_lambdas)
+            y_valid = box_cox_transform(valid.y, bx_lambdas)
+        else:
+            y_train = train.y
+            y_valid = valid.y
 
-            if bx:
-                bx_lambdas = get_boxcox_lambdas()
-                bx_lambdas = {'Ppar': 0, 'Pper1': 0, 'Pper2': 0}
-                y_train = box_cox_transform(train.y, bx_lambdas)
-                y_valid = box_cox_transform(valid.y, bx_lambdas)
+        for targ in target:
+            if not outputscaler:
+                outscaler = StandardScaler()
+                print('Using standardscaler')
             else:
-                y_train = train.y
-                y_valid = valid.y
+                print('Using custom scaler')
+                outscaler = copy.copy(outputscaler)
+            y_train[[targ]] = outscaler.fit_transform(y_train[[targ]])
+            y_valid[[targ]] = outscaler.transform(y_valid[[targ]])
+            output_scaler[targ] = copy.copy(outscaler)
 
+        y_train = pd.DataFrame(y_train, columns=target)
+        y_valid = pd.DataFrame(y_valid, columns=target)
+
+        x_train = pd.DataFrame(x_train, columns=features)
+        x_valid = pd.DataFrame(x_valid, columns=features)
+
+        t_train = DataSet(x=x_train, y=y_train)
+        t_valid = DataSet(x=x_valid, y=y_valid)
+
+        x_testdata = {}
+        y_testdata = {}
+        for simulation in all_files:
+            testfile = 'data/sampled/{}_{}_sampled.h5'.format(simulation, specie)
+            _, _, test, _, _ = create_experiment_from_stored_sample(target, features, testfile)
+            
+            x_test = input_scaler.transform(test.x)
+            if bx:
+                print('Using box cox')
+                y_test = box_cox_transform(test.y, bx_lambdas)
+            else:
+                y_test = test.y
+            #y_test = pd.DataFrame(y_test, columns=target)
             for targ in target:
-                if not outputscaler:
-                    outscaler = StandardScaler()
-                    print('Using standardscaler')
-                else:
-                    print('Using custom scaler')
-                    outscaler = copy.copy(outputscaler)
-                y_train[[targ]] = outscaler.fit_transform(y_train[[targ]])
-                y_valid[[targ]] = outscaler.transform(y_valid[[targ]])
-                output_scaler[targ] = copy.copy(outscaler)
+                y_test[[targ]] = output_scaler[targ].transform(y_test[[targ]])
+            
+            x_testdata[simulation] = x_test
+            y_testdata[simulation] = y_test
 
-            y_train = pd.DataFrame(y_train, columns=target)
-            y_valid = pd.DataFrame(y_valid, columns=target)
+        ## save to h5 file
+        save_experiment_to_file('{}/{}.h5'.format(path, specie), t_train, t_valid, x_testdata, y_testdata)
 
-            x_train = pd.DataFrame(x_train, columns=features)
-            x_valid = pd.DataFrame(x_valid, columns=features)
-
-            t_train = DataSet(x=x_train, y=y_train)
-            t_valid = DataSet(x=x_valid, y=y_valid)
-
-            x_testdata = {}
-            y_testdata = {}
-            for simulation in all_files:
-                testfile = 'data/sampled/{}_{}_sampled.h5'.format(simulation, spec)
-                _, _, test, _, _ = create_experiment_from_stored_sample(target, features, testfile)
-                
-                x_test = input_scaler.transform(test.x)
-                if bx:
-                    print('Using box cox')
-                    y_test = box_cox_transform(test.y, bx_lambdas)
-                else:
-                    y_test = test.y
-                #y_test = pd.DataFrame(y_test, columns=target)
-                for targ in target:
-                    y_test[[targ]] = output_scaler[targ].transform(y_test[[targ]])
-                
-                x_testdata[simulation] = x_test
-                y_testdata[simulation] = y_test
-
-            ## save to h5 file
-            save_experiment_to_file('{}/{}.h5'.format(path, spec), t_train, t_valid, x_testdata, y_testdata)
-
-            ## save transformer
-            pickle.dump(input_scaler, open('{}/inputtr_{}.pkl'.format(path, spec), 'wb'))
-            pickle.dump(output_scaler, open('{}/outputtr_{}.pkl'.format(path, spec), 'wb'))
+        ## save transformer
+        pickle.dump(input_scaler, open('{}/inputtr_{}.pkl'.format(path, specie), 'wb'))
+        pickle.dump(output_scaler, open('{}/outputtr_{}.pkl'.format(path, specie), 'wb'))
 
 
 if __name__ == '__main__':
 
-    target = ['Ppar', 'Pper1', 'Pper2']
-    features = ['rho', 'Bx', 'By', 'Bz', 'B_magn', 'alpha', 'Vx', 'Vy', 'Vz', 'dBxdx', 'dBxdy', 'dBydy', 'dBzdx', 'dBzdy']
+    parser = argparse.ArgumentParser(description='Raw data parser')
+    parser.add_argument('--config_file',  '-f',
+                        dest="configfile",
+                        metavar='string',
+                        help =  'path to an experiment config file',
+                        default='')
 
-    experiment_species = ['all_electrons']
-    experiment_dict = {'diag_all_sim_log': ['high_res_2', 'high_res_hbg', 'high_res_bg3', 'high_res_bg0']}
-    outsc = None # MinMaxScaler(feature_range=(0, 1))
-    create_experiments(experiment_dict, experiment_species, target, features, bx=True, outputscaler=outsc)
+    args = parser.parse_args()
 
-    target = ['HFx', 'HFy', 'HFz']
-    #features = ['rho', 'Bx', 'By', 'Bz', 'B_magn', 'alpha', 'Vx', 'Vy', 'Vz']
+    configfile = args.configfile
 
-    experiment_species = ['all_electrons']
-    experiment_dict = {'hf_all_sim': ['high_res_2', 'high_res_hbg', 'high_res_bg3', 'high_res_bg0']}
+    if args.configfile == '':
+        print('Please provide an experiment configfile.')
+        exit(1)
 
-    create_experiments(experiment_dict, experiment_species, target, features, bx=False)
-    # Create exp with non-diag terms of P
-    target = ['Pparp1', 'Pparp2', 'Pper12']
-    #features = ['rho', 'Bx', 'By', 'Bz', 'B_magn', 'alpha', 'Vx', 'Vy', 'Vz']
+    with open(configfile, 'r') as stream:
+        config = yaml.safe_load(stream)
 
-    experiment_dict = {'offdiag_all_sim': ['high_res_2', 'high_res_hbg', 'high_res_bg3', 'high_res_bg0']}
-
-    create_experiments(experiment_dict, experiment_species, target, features, bx=False)
-    
+    create_experiments(exp_name=config['experiment_name'], 
+                       exp_files=config['datafiles'],
+                       experiment_species=config['species'], 
+                       target=config['target'], 
+                       features=config['features'], 
+                       bx=config['boxcox'], 
+                       outputscaler=config['outputscaler']
+                       )
 
