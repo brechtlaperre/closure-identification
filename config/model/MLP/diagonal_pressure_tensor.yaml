@@ -1,0 +1,47 @@
+hyperparameters:
+  Ppar:
+    batch_size: 400
+    epochs: 100
+    layer_function_l0: Tanh
+    layer_function_l1: Tanh
+    layer_function_l2: ReLU
+    layer_function_l3: Tanh
+    lr_power: -2.8106269516649233
+    n_layers: 4
+    n_units_l0: 80
+    n_units_l1: 110
+    n_units_l2: 150
+    n_units_l3: 80
+    optimizer: Adam
+  Pper1:
+    batch_size: 512
+    epochs: 100
+    layer_function_l0: Tanh
+    layer_function_l1: Tanh
+    layer_function_l2: ReLU
+    layer_function_l3: Tanh
+    lr_power: -3.2106269516649233
+    n_layers: 4
+    n_units_l0: 60
+    n_units_l1: 110
+    n_units_l2: 150
+    n_units_l3: 80
+    optimizer: Adam
+  Pper2:
+    batch_size: 512
+    epochs: 100
+    layer_function_l0: Tanh
+    layer_function_l1: Tanh
+    layer_function_l2: ReLU
+    layer_function_l3: Tanh
+    lr_power: -3.2106269516649233
+    n_layers: 4
+    n_units_l0: 60
+    n_units_l1: 110
+    n_units_l2: 150
+    n_units_l3: 80
+    optimizer: Adam
+target:
+- Ppar
+- Pper1
+- Pper2

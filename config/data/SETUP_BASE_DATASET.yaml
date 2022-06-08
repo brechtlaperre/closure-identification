@@ -1,0 +1,33 @@
+## SETUP FILE FOR DATASET USED IN EXPERIMENTS - USED BY SRC/DATA/CREATE_EXPERIMENT_DATASET.PY
+
+# Name of the experiment. Is used as folder name in data/experiment
+experiment_name: "BASIS"
+
+# This file is used by 'create_experiment_dataset.py' to create a training, validation and test set containing a set of inputs (features) and outputs (target).
+# Technically any value can be used as both target and feature, but this has not been tested extensively. New values have to be added in the preprocess_raw_data.py file.
+# Below we provide the full list of named values that are produced from the preprocessor in this version. 
+# ['Agyro', 'alpha', 'Bx', 'By', 'Bz', 'Bxy', 'Bxz', 'Byz', 'B_magn', 'Vx', 'Vy', 'Vz', 'Vxy', 'Vxz', 'Vyz'
+#  'dBxdx', 'dBxdy', 'dBydx', 'dBydy', 'dBzdx', 'dBzdy', 'dBxdx', 'dVxdy', 'dVydx', 'dVydy', 'dVzdx', 'dVzdy',
+#  'Jx', 'Jy', 'Jz', 'Ex_mhd', 'Ey_mhd', 'Ez_mhd', 'Ex', 'Ey', 'Ez', 'HFx', 'HFy', 'HFz',
+#  'Psc', 'T', 'vth', 'Pxx', 'Pyy', 'Pzz', 'Pxy', 'Pxz', 'Pyz', 'Ppar', 'Pper1', 'Pper2', 'Pparp1', 'Pparp2', 'Pper12' ]
+
+# List of target values for the model to predict
+target: ['Ppar', 'Pper1', 'Pper2']
+# List of features the model uses as input in order to predict the target
+features: ['Bx', 'By', 'Bz']
+
+# Particle species. Following options are available: 'all_electrons' (corresponds to species 0 and 2).
+# More options can be added in sample_processed_data. 
+# For each value of this list, a file is created in data/experiment/'experiment_name'/'specie_name'.h5
+species: ['specie_name']
+
+# Which datafiles to include in the experiment data. Following options are available:
+# ['high_res_2', 'high_res_hbg', 'high_res_bg3', 'high_res_bg0']
+datafiles: ['high_res_2', 'high_res_hbg', 'high_res_bg3', 'high_res_bg0']
+
+# Outputscaler that should be applied on training/validation/test set. 
+outputscaler: null
+
+# If boxcox transformation is applied on the target values. Be aware that this requires strictly positive data.
+# Currently only applicable for the diagonal components of the pressure tensor. True or False
+boxcox: False

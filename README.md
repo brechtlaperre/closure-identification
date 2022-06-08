@@ -15,8 +15,12 @@ Published in Physics of Plasmas (Vol.29, Issue 3), 2022.
 # How to use
 
 1. Download the simulation data from [OSF](https://osf.io/gts8e/).
-2. Place the downloaded data in the respective folders in `data/raw`
-3. Run `make experiments` to prepare the experiment data. 
+2. Place the downloaded files in their respective folders in `data/raw`
+3. Run the Makefile to prepare the experiments with the configurations available in `config`:  
+```
+make experiments
+```  
+ 4. 
 
 
 

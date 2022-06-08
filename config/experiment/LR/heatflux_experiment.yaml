@@ -1,0 +1,6 @@
+experiment_name: LR_heatflux
+
+dataconfig: config/data/setup_heatflux_dataset.yaml
+modelconfig: config/model/LR/basic_setup.yaml
+
+destination_folder: experiment

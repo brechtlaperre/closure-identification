@@ -26,7 +26,6 @@ class MLP(nn.Module):
         
         self.input_scaler = input_scaler
         self.output_scaler = output_scaler
-        print(input_size, output_size)
         self.model = self._create_mlp_from_config(config, input_size, output_size, relu)
 
         def init_weights(m):

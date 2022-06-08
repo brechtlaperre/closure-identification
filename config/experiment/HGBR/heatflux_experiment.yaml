@@ -1,0 +1,6 @@
+experiment_name: HGBR_heatflux
+
+dataconfig: config/data/setup_heatflux_dataset.yaml
+modelconfig: config/model/HGBR/heatflux.yaml
+
+destination_folder: experiment

@@ -1,0 +1,6 @@
+experiment_name: LR_offdiagonal_pressure
+
+dataconfig: config/data/setup_offdiagonal_pressure_tensor_dataset.yaml
+modelconfig: config/model/LR/basic_setup.yaml
+
+destination_folder: experiment

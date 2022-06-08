@@ -1,0 +1,23 @@
+hyperparameters:
+  HFx:
+    learning_rate: 0.15315831158380752
+    loss: least_squares
+    max_depth: 11
+    max_iter: 550
+    regularization: -3.883957279465186
+  HFy:
+    learning_rate: 0.14030673921303552
+    loss: least_squares
+    max_depth: 11
+    max_iter: 550
+    regularization: -3.883957279465186
+  HFz:
+    learning_rate: 0.1494414855590542
+    loss: least_squares
+    max_depth: 11
+    max_iter: 550
+    regularization: -3.883957279465186
+target:
+- HFx
+- HFy
+- HFz

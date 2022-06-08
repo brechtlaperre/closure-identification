@@ -1,0 +1,62 @@
+data:
+  trainingfile: data/experiment/all_sim_all_electrons.h5
+features: null
+hyperparameters:
+  Pparp1:
+    batch_size: 400
+    epochs: 100
+    layer_function_l0: Tanh
+    layer_function_l1: Tanh
+    layer_function_l2: ReLU
+    layer_function_l3: Tanh
+    lr_power: -2.8106269516649233
+    n_layers: 4
+    n_units_l0: 80
+    n_units_l1: 110
+    n_units_l2: 150
+    n_units_l3: 80
+    optimizer: Adam
+  Pparp2:
+    batch_size: 512
+    epochs: 100
+    layer_function_l0: Tanh
+    layer_function_l1: Tanh
+    layer_function_l2: ReLU
+    layer_function_l3: Tanh
+    lr_power: -3.2106269516649233
+    n_layers: 4
+    n_units_l0: 60
+    n_units_l1: 80
+    n_units_l2: 50
+    n_units_l3: 40
+    optimizer: Adam
+  Pper12:
+    batch_size: 512
+    epochs: 100
+    layer_function_l0: Tanh
+    layer_function_l1: Tanh
+    layer_function_l2: ReLU
+    layer_function_l3: Tanh
+    lr_power: -3.2106269516649233
+    n_layers: 4
+    n_units_l0: 60
+    n_units_l1: 80
+    n_units_l2: 50
+    n_units_l3: 40
+    optimizer: Adam
+misc:
+  experiment_date: November 16 2021, 13:09
+model:
+  info: ''
+  location: MSELoss
+  name: experiment_all_sim
+  type: MLP
+optuna:
+  data: data/experiment/all_sim_all_electrons.h5
+  n_trials: null
+  target feature: MSELoss
+  timeout: 1200
+target:
+- Pparp1
+- Pparp2
+- Pper12

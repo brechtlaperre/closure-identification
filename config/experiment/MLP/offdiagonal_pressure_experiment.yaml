@@ -1,0 +1,6 @@
+experiment_name: MLP_offdiagonal_pressure
+
+dataconfig: config/data/setup_offdiagonal_pressure_tensor_dataset.yaml
+modelconfig: config/model/MLP/offdiagonal_pressure_tensor.yaml
+
+destination_folder: experiment

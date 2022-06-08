@@ -1,0 +1,23 @@
+hyperparameters:
+  Pparp1:
+    learning_rate: 0.12791175988351267
+    loss: least_squares
+    max_depth: 15
+    max_iter: 550
+    regularization: -3.883957279465186
+  Pparp2:
+    learning_rate: 0.08439982683549309
+    loss: least_squares
+    max_depth: 15
+    max_iter: 550
+    regularization: -3.5116588265125737
+  Pper12:
+    learning_rate: 0.05878487689287481
+    loss: least_squares
+    max_depth: 15
+    max_iter: 550
+    regularization: -4.3595900218872
+target:
+- Pparp1
+- Pparp2
+- Pper12

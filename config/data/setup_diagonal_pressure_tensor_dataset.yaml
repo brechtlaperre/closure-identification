@@ -1,4 +1,4 @@
-experiment_name: 'diag_all_sim_log'
+experiment_name: 'diag_all_sim_boxcox'
 
 target: ['Ppar', 'Pper1', 'Pper2']
 features: ['rho', 

@@ -11,7 +11,7 @@ import pandas as pd
 import h5py
 
 from preprocess_raw_data import read_preprocessed_data
-from src.data.data_utils import DataSet
+from data_utils import DataSet
 
 def sample_on_agyro(data, bins, samplesize, testdata=False, random_state=12345):
     ''' Sample data based on agyrotropy
@@ -265,6 +265,8 @@ if __name__ == '__main__':
     test_samples_per_bin = 2500 
 
     datafiles = ['high_res_bg3', 'high_res_bg0', 'high_res_2', 'high_res_hbg']
+    # Possible species: 
+    # 'Species_0', 'Species_1', 'Species_2', 'Species_3', 'Species_0+2', 'Species_1+3'
     specie_dict = {'Species_0+2': 'all_electrons'}
 
     for filename in datafiles:

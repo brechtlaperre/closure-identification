@@ -26,7 +26,7 @@ from scipy.special import inv_boxcox
 import yaml
 
 from sample_processed_data import create_experiment_from_stored_sample
-from src.data.data_utils import DataSet
+from data_utils import DataSet
 
 def get_boxcox_lambdas():
     return {'Ppar': -0.3, 'Pper1': -0.45, 'Pper2': -0.5}
