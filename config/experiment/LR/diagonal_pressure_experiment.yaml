@@ -1,5 +1,5 @@
 experiment_name: LR_diagonal_pressure
-
+model: LR
 dataconfig: config/data/setup_diagonal_pressure_tensor_dataset.yaml
 modelconfig: config/model/LR/basic_setup.yaml
 

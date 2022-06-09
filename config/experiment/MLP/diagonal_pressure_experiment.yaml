@@ -1,5 +1,5 @@
 experiment_name: MLP_diagonal_pressure
-
+model: MLP
 dataconfig: config/data/setup_diagonal_pressure_tensor_dataset.yaml
 modelconfig: config/model/MLP/diagonal_pressure_tensor.yaml
 

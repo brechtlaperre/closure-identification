@@ -6,12 +6,15 @@ by sampling data based on the agyrotropy. No transformations of the data are don
 The resulting datasets are stored in the folder data/sampled
 
 '''
+import sys
 import numpy as np
 import pandas as pd
 import h5py
 
+sys.path.append('.')
+
 from preprocess_raw_data import read_preprocessed_data
-from data_utils import DataSet
+from src.utils.data_utils import DataSet
 
 def sample_on_agyro(data, bins, samplesize, testdata=False, random_state=12345):
     ''' Sample data based on agyrotropy

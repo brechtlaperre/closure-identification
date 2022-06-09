@@ -1,5 +1,5 @@
 experiment_name: MLP_offdiagonal_pressure
-
+model: MLP
 dataconfig: config/data/setup_offdiagonal_pressure_tensor_dataset.yaml
 modelconfig: config/model/MLP/offdiagonal_pressure_tensor.yaml
 

@@ -1,5 +1,5 @@
 experiment_name: HGBR_diagonal_pressure
-
+model: HGBR
 dataconfig: config/data/setup_diagonal_pressure_tensor_dataset.yaml
 modelconfig: config/model/HGBR/diagonal_pressure_tensor.yaml
 

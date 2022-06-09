@@ -16,11 +16,20 @@ Published in Physics of Plasmas (Vol.29, Issue 3), 2022.
 
 1. Download the simulation data from [OSF](https://osf.io/gts8e/).
 2. Place the downloaded files in their respective folders in `data/raw`
-3. Run the Makefile to prepare the experiments with the configurations available in `config`:  
+3. Run the Makefile to prepare the experiments with the configurations available in `config/data`:  
 ```
-make experiments
+make prepare_experiments
 ```  
- 4. 
-
+ 4. To train either a linear regressor, histogram gradient boosting regressor or multilayer perceptron with the configuration files provided in `config/model` and `config/experiment`, run one of the following commands.
+ ```
+ make linreg_experiment
+ make hgbr_experiment
+ make mlp_experiment
+ ```
+ 5. To evaluate the models created by the previous command, run the following make command
+ ```
+ make evaluate
+ ```
+This will generate tables with results in the `results/` folder.
 
 

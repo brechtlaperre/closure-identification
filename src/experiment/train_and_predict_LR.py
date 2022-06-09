@@ -1,13 +1,13 @@
 import sys
-
 import pandas as pd
 import yaml
 import pickle
 import argparse
+
 sys.path.append('.')
 
 from sklearn.linear_model import LinearRegression
-from utils import save_prediction_to_file, create_folder, load_experiment_from_file
+from src.utils.experiment_utils import save_prediction_to_file, create_folder, load_experiment_from_file
 
 def train_lr(modelconfig, datafile, destination):
     

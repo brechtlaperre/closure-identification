@@ -1,5 +1,5 @@
 experiment_name: LR_heatflux
-
+model: LR
 dataconfig: config/data/setup_heatflux_dataset.yaml
 modelconfig: config/model/LR/basic_setup.yaml
 

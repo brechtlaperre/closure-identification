@@ -10,7 +10,7 @@ import numpy as np
 sys.path.append('.')
 
 from src.model.MLP import MLP
-from utils import save_prediction_to_file, save_training_error_to_file, create_folder, load_experiment_from_file
+from src.utils.experiment_utils import save_prediction_to_file, save_training_error_to_file, create_folder, load_experiment_from_file
 
 def train_mlp(config, datafile, destination, epochs, save_results=True, load_models=False, train_targets=None):
 

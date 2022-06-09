@@ -36,6 +36,23 @@ mlp_experiment:
 	${PYTHON} ${EXPERIMENT}/train_and_predict_MLP.py -c ${EXPERIMENTCONFIG}/MLP/offdiagonal_pressure_experiment.yaml -e ${EPOCHS}
 	${PYTHON} ${EXPERIMENT}/train_and_predict_MLP.py -c ${EXPERIMENTCONFIG}/MLP/heatflux_experiment.yaml -e ${EPOCHS}
 
+linreg_evaluate: 
+	${PYTHON} ${EXPERIMENT}/evaluate_experiment.py -c ${EXPERIMENTCONFIG}/LR/diagonal_pressure_experiment.yaml 
+	${PYTHON} ${EXPERIMENT}/evaluate_experiment.py -c ${EXPERIMENTCONFIG}/LR/offdiagonal_pressure_experiment.yaml 
+	${PYTHON} ${EXPERIMENT}/evaluate_experiment.py -c ${EXPERIMENTCONFIG}/LR/heatflux_experiment.yaml 
+
+hgbr_evaluate: 
+	${PYTHON} ${EXPERIMENT}/evaluate_experiment.py -c ${EXPERIMENTCONFIG}/HGBR/diagonal_pressure_experiment.yaml 
+	${PYTHON} ${EXPERIMENT}/evaluate_experiment.py -c ${EXPERIMENTCONFIG}/HGBR/offdiagonal_pressure_experiment.yaml 
+	${PYTHON} ${EXPERIMENT}/evaluate_experiment.py -c ${EXPERIMENTCONFIG}/HGBR/heatflux_experiment.yaml 
+
+mlp_evaluate: 
+	${PYTHON} ${EXPERIMENT}/evaluate_experiment.py -c ${EXPERIMENTCONFIG}/MLP/diagonal_pressure_experiment.yaml 
+	${PYTHON} ${EXPERIMENT}/evaluate_experiment.py -c ${EXPERIMENTCONFIG}/MLP/offdiagonal_pressure_experiment.yaml 
+	${PYTHON} ${EXPERIMENT}/evaluate_experiment.py -c ${EXPERIMENTCONFIG}/MLP/heatflux_experiment.yaml 
+
+evaluate: linreg_evaluate hgbr_evaluate mlp_evaluate
+
 clean_data_experiments:
 	rm -rf data/experiment/*
 	touch data/experiment/.gitkeep
@@ -44,7 +61,11 @@ clean_experiments:
 	rm -rf experiment/*
 	touch experiment/.gitkeep
 
-clean: clean_data_experiments
+clean_results:
+	rm -rf results/*
+	touch results/.gitkeep
+
+clean: clean_data_experiments clean_experiments clean_results
 	rm -rf data/processed/*.h5
 	rm -rf data/sampled/*.h5
 	

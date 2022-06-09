@@ -8,7 +8,7 @@ import pickle
 sys.path.append('.')
 
 from src.model.HGBR import HGBR
-from utils import load_experiment_from_file, save_prediction_to_file, create_folder
+from src.utils.experiment_utils import load_experiment_from_file, save_prediction_to_file, create_folder
 
 def train_hgbr(config, datafile, destination):
 
