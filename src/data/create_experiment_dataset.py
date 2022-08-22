@@ -93,7 +93,6 @@ def create_experiments(exp_name, exp_files, experiment_species, target, features
 
         if bx:
             bx_lambdas = get_boxcox_lambdas()
-            bx_lambdas = {'Ppar': 0, 'Pper1': 0, 'Pper2': 0}
             y_train = box_cox_transform(train.y, bx_lambdas)
             y_valid = box_cox_transform(valid.y, bx_lambdas)
         else:

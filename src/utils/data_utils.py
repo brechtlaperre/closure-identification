@@ -10,8 +10,11 @@ class DataSet(NamedTuple):
     bin_value: pd.DataFrame = None
     agyro: pd.DataFrame = None
 
-def get_boxcox_lambdas():
-    return {'Ppar': -0.3, 'Pper1': -0.45, 'Pper2': -0.5}
+def get_boxcox_lambdas(enforce_log=False):
+    if enforce_log:
+        return {'Ppar': 0, 'Pper1': 0, 'Pper2': 0}
+    else:
+        return {'Ppar': -0.3, 'Pper1': -0.45, 'Pper2': -0.5}
 
 def reverse_transform(data, transformer_file):
 
