@@ -50,19 +50,16 @@ def provide_best_metric(data):
 
 def evaluate_experiment(experiment_data, prediction_data, model_name):
     
-
     #print('################# {} #################'.format(exp))
     pred, truth = load_prediction(prediction_data, experiment_data)
     result_sets = []
     for key in pred.keys():
-        #print('################# {} #################'.format(key))
-        results = pd.DataFrame.from_dict(evaluate(pred[key], truth[key]))
+        
+        #results = pd.DataFrame.from_dict(evaluate(pred[key], truth[key]))
         
         rmse = invert_transformation_and_evaluate(pred[key], truth[key], transformer)
-        subset = rmse[['NRMSE']].copy().rename(columns={'NRMSE': 'NRMSE [%]'}) # #subset = rmse[['RMSE']].copy()
+        subset = rmse[['NRMSE']].copy().rename(columns={'NRMSE': 'NRMSE [%]'})
         
-        subset['r2'] = results['r2'].values
-        subset['pr'] = results['pr'].values
         subset['model'] = model_name
         subset['Type'] = key
         subset = subset.reset_index()
